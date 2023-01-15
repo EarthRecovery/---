@@ -1,4 +1,3 @@
-import hashlib
 from multiprocessing import Barrier
 from pyqpanda import *
 import numpy as np
@@ -7,17 +6,20 @@ if __name__ == "__main__":
 
     qvm = CPUQVM()
     qvm.init_qvm()
-    qubits = qvm.qAlloc_many(3)
-    cbits = qvm.cAlloc_many(3)
+    qubits = qvm.qAlloc_many(2)
+    cbits = qvm.cAlloc_many(2)
 
     # 构建量子程序
     prog = QProg()
     circuit = QCircuit()
 
-    circuit << X(qubits[2]) \
-        << H(qubits[0]) \
-        << H(qubits[1]) \
-        << H(qubits[2]) \
+    circuit << X(qubits[0]) \
+         << BARRIER(qubits[0]) \
+         << BARRIER(qubits[1]) \
+         << H(qubits[1]) \
+         << H(qubits[0]) \
+         << CNOT(qubits[0], qubits[1]) \
+         << H(qubits[0])
 
     prog << circuit << Measure(qubits[0], cbits[0])
 
