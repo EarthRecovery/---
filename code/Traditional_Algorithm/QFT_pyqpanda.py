@@ -274,14 +274,19 @@ def shorAlg(base, M):
     prog = QProg()
 
     prog.insert(X(qb[0]))
+    draw_qprog(prog, 'pic', filename='./test_cir_draw.png')
     prog.insert(single_gate_apply_to_all(H, qa)) #第一个QFT
     prog.insert(constModExp(qa, qb, base, M, qs1, qs2, qs3))
     prog.insert(qft(qa).dagger())
 
+    # print(prog)
+
+    # draw_qprog(prog, 'pic', filename='./test_cir_draw.png')
+
     directly_run(prog)
     result = quick_measure(qa, 100)
 
-    print(result)
+    # print(result)
 
     xdata, ydata = reorganizeData(qa, result)
     plotBar(xdata, ydata)
